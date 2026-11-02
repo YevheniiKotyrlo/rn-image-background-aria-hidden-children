@@ -1,37 +1,29 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
  * @format
  */
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import { ImageBackground, StyleSheet, Text, View } from 'react-native';
+
+const image = { uri: 'https://reactnative.dev/img/tiny_logo.png' };
 
 function App() {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
-    </SafeAreaProvider>
-  );
-}
-
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
-
   return (
     <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
-      />
+      <Text style={styles.heading}>aria-hidden on ImageBackground</Text>
+      <Text>Text outside any hidden view</Text>
+      <View aria-hidden style={styles.box}>
+        <Text>Child of View with aria-hidden</Text>
+      </View>
+      <ImageBackground aria-hidden source={image} style={styles.box}>
+        <Text>Child of ImageBackground with aria-hidden</Text>
+      </ImageBackground>
+      <ImageBackground
+        importantForAccessibility="no-hide-descendants"
+        source={image}
+        style={styles.box}
+      >
+        <Text>Child of ImageBackground with no-hide-descendants</Text>
+      </ImageBackground>
     </View>
   );
 }
@@ -39,6 +31,19 @@ function AppContent() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    gap: 12,
+    paddingHorizontal: 16,
+    paddingTop: 80,
+  },
+  heading: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  box: {
+    backgroundColor: '#dddddd',
+    height: 64,
+    justifyContent: 'center',
+    padding: 8,
   },
 });
 
